@@ -10,9 +10,15 @@ KEYS
 ====
 
 Pause						[p] or [Space]
+
 Single-step through solution			[s]
+
 Rotate color (Flame => Absinthe => Cherenkov)	[c]
+
 Iterate and update at full speed		[i]
+
 Display boundary condition			[b]
+
 Reset grid					[r]
+
 Quit						[q]
