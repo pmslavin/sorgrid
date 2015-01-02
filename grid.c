@@ -8,14 +8,14 @@
 
 
 
-void drawcell(int x, int y, double v){
-
+void drawcell(int x, int y, double v)
+{
 	if(gridcolour == RED)
-		glColor3f(v, v/2.0, v/3.5);	// Flame
+		glColor3f(v, v/2.0, v/3.5);	/* Flame */
 	else if(gridcolour == GREEN)
-		glColor3f(v/2.5, v, v/2.0);	// Absinthe
+		glColor3f(v/2.5, v, v/2.0);	/* Absinthe */
 	else if(gridcolour == BLUE)
-		glColor3f(v/3.0, v/2.5, v);	// Cherenkov
+		glColor3f(v/3.0, v/2.5, v);	/* Cherenkov */
 
 
 	glBegin(GL_QUADS);
@@ -24,12 +24,11 @@ void drawcell(int x, int y, double v){
 		glVertex2i((x+1)*CW+BORDER+xoffset, (y+1)*CH+BORDER);
 		glVertex2i(x*CW+BORDER+xoffset, (y+1)*CH+BORDER);
 	glEnd();
-
 }
 
 
-void bitmapString(void *font, char *str, int x, int y){
-
+void bitmapString(void *font, char *str, int x, int y)
+{
 	glColor3f(1.0, 1.0, 1.0);
 	glRasterPos2i(x, y);
 
@@ -42,16 +41,18 @@ void bitmapString(void *font, char *str, int x, int y){
 }
 
 
-void initRendering(void){
-
+void initRendering(void)
+{
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glShadeModel(GL_FLAT);
 	gluOrtho2D(0, w, h, 0);
-
 }
 
 
-void handleKeyPress(unsigned char key, int wx, int wy){
+void handleKeyPress(unsigned char key, int wx, int wy)
+{
+	(void)wx; /* Unused */
+	(void)wy; /* Unused */
 
         switch(key){
   /* q */	case 'q':
@@ -67,7 +68,7 @@ void handleKeyPress(unsigned char key, int wx, int wy){
 				break;
 
   /* s */	case 's':	paused = 1;
-			        if((epsilon = calcerror(x)) >= tol){
+			        if((epsilon = calcerror()) >= tol){
 			                runsor();
         		        	glutPostRedisplay();
 				}else{
@@ -89,7 +90,7 @@ void handleKeyPress(unsigned char key, int wx, int wy){
 
   /* i */	case 'i':	stepDelay = (stepDelay ? 0 : DELAY);
 				paused = 0;
-//				glutTimerFunc(stepDelay, update, 0);
+/* Can time here...				glutTimerFunc(stepDelay, update, 0); */
 				break;
 
         }
@@ -97,8 +98,8 @@ void handleKeyPress(unsigned char key, int wx, int wy){
 
 
 
-void handleResize(int wx, int hx){
-
+void handleResize(int wx, int hx)
+{
         glViewport(0, 0, wx, hx);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
@@ -108,12 +109,13 @@ void handleResize(int wx, int hx){
 }
 
 
-void drawScene(void){
+void drawScene(void)
+{
+	int i, j;
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
-	int i, j;
 
 	for(i=0; i<N+boundary; i++){
 		for(j=0; j<N+boundary; j++){
@@ -153,7 +155,9 @@ void drawScene(void){
 }
 
 
-void update(int v){
+void update(int v)
+{
+	(void)v;	/* Unused */
 
 	if(paused){
 	        glutTimerFunc(stepDelay, update, 0);
@@ -161,7 +165,7 @@ void update(int v){
 		return;
 	}
 
-	if((epsilon = calcerror(x)) >= tol){
+	if((epsilon = calcerror()) >= tol){
 		runsor();
 		glutPostRedisplay();
 	        glutTimerFunc(stepDelay, update, 0);

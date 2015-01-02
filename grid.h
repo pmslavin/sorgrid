@@ -3,17 +3,19 @@
 
 #include "GL/glut.h"
 
-
 const int w = 1024;
 const int h = 768;
 
 const int ROWS = N, COLS = N;
 const int BORDER = 24;
-
 const int DELAY = 100;
 unsigned char converged = 0, paused = 1, boundary = 0;
 
-typedef enum { RED = 0x01, GREEN = 0x02, BLUE = 0x04 } cell_colour_t;
+typedef enum {	RED = 0x01,
+       		GREEN = 0x02,
+		BLUE = 0x04
+} cell_colour_t;
+
 cell_colour_t gridcolour = RED;
 
 int CW;
@@ -28,14 +30,12 @@ char itertext[32];
 char convtext[128];
 
 
-// This isn't used...
+/* This isn't used... */
 typedef struct cell_struct{
-
         int x, y;
         float r, g, b, a;
-
 } Cell;
-
+/* ...but it could be. */
 
 
 void drawcell(int, int, double);
@@ -45,7 +45,6 @@ void handleKeyPress(unsigned char, int, int);
 void handleResize(int, int);
 void drawScene(void);
 void update(int);
-
 
 
 #endif

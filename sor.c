@@ -9,11 +9,10 @@ double tol = 0.001, epsilon = 0.0;
 int iter = 0;
 
 
-void initgrid(void){
+void initgrid(void)
+{
 	int i, j;
-	double h;
-
-	h = M_PI/(double)(N+1);
+	double h = M_PI/(double)(N+1);
 
 	for(i=0; i<N+2; i++)
 		x[i][N+1] = sin((double)i*h);
@@ -40,29 +39,24 @@ void initgrid(void){
 	}
 }
 
-void runsor(void){
-
+void runsor(void)
+{
 	int i, j;
 
-		for(i=1; i<N+1; i++)
-			for(j=1; j<N+1; j++){
+	for(i=1; i<N+1; i++)
+		for(j=1; j<N+1; j++)
+			xnew[i][j] = x[i][j]+0.25*omega*(xnew[i-1][j] + xnew[i][j-1] + x[i+1][j] + x[i][j+1] - (4*x[i][j]));
 
-				xnew[i][j] = x[i][j]+0.25*omega*(xnew[i-1][j] + xnew[i][j-1] + x[i+1][j] + x[i][j+1] - (4*x[i][j]));
-			}
-		
-				
+	for(i=1; i<N+1; i++)
+		for(j=1; j<N+1; j++)
+			x[i][j] = xnew[i][j];
 
-		for(i=1; i<N+1; i++)
-			for(j=1; j<N+1; j++)
-				x[i][j] = xnew[i][j];
-
-		iter++;
+	iter++;
 }
 
 
-
-void showgrid(double g[][N+2]){
-
+void showgrid(double g[][N+2])
+{
 	int i,j;
 
 	for(i=0; i<N; i++){
@@ -74,9 +68,8 @@ void showgrid(double g[][N+2]){
 }
 
 
-
-double calcerror(double g[][N+2]){
-
+double calcerror(void)
+{
 	int i,j;
 	double error = 0.0;
 
