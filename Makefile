@@ -12,10 +12,10 @@ sorgrid: ${OBJECTS}
 	${CC} ${OBJECTS} -o sorgrid ${LIBS}
 
 sor.o: sor.c sor.h
-	${CC} ${WARN} -c sor.c
+	${CC} ${CFLAGS} ${WARN} -c sor.c
 
 grid.o: grid.c grid.h sor.h
-	${CC} ${WARN} -c grid.c
+	${CC} ${CFLAGS} ${WARN} -c grid.c
 
 clean:
 	-rm *.o sorgrid

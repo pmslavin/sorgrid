@@ -6,6 +6,7 @@
 #define M N+2	/* Not used, but would make arrays neater */
 #define MAX(a,b) (((a)>(b))?(a):(b))
 #define MIN(a,b) (((a)<(b))?(a):(b))
+#define M_PI 3.14159265358979323846264338327
 
 double x[N+2][N+2], xnew[N+2][N+2], solution[N+2][N+2];
 
