@@ -9,6 +9,25 @@
 #include "sor.h"
 #include "grid.h"
 
+const int w = 1024;
+const int h = 768;
+const int ROWS = N, COLS = N;
+const int BORDER = 24;
+const int DELAY = 100;
+
+int CW, CH;
+int xoffset;
+int stepDelay;
+
+char convtext[128];
+char itertext[32];
+
+cell_colour_t gridcolour = RED;
+unsigned char converged  = 0, paused = 1, boundary = 0;
+
+void *font			= GLUT_BITMAP_HELVETICA_12;
+const char *convstr = "Convergence in %d iterations for %dx%d grid with tolerance %5.3f and omega %.8f";
+const char *iterstr = "Iteration %d    e: %.8f";
 
 
 void drawcell(int x, int y, double v)
@@ -22,10 +41,10 @@ void drawcell(int x, int y, double v)
 
 
 	glBegin(GL_QUADS);
-		glVertex2i(x*CW+BORDER+xoffset, y*CH+BORDER);
+		glVertex2i(x*CW+BORDER+xoffset,		y*CH+BORDER);
 		glVertex2i((x+1)*CW+BORDER+xoffset, y*CH+BORDER);
 		glVertex2i((x+1)*CW+BORDER+xoffset, (y+1)*CH+BORDER);
-		glVertex2i(x*CW+BORDER+xoffset, (y+1)*CH+BORDER);
+		glVertex2i(x*CW+BORDER+xoffset,		(y+1)*CH+BORDER);
 	glEnd();
 }
 
@@ -61,7 +80,7 @@ void handleKeyPress(unsigned char key, int wx, int wy)
   /* q */	case 'q':
   /* ESC */     case 27:
 				exit(0);
-                                break;
+				break;
   /* Space */	case 32:
   /* p */	case 'p':
 				paused = (paused ? 0 : 1);
@@ -71,9 +90,9 @@ void handleKeyPress(unsigned char key, int wx, int wy)
 				break;
 
   /* s */	case 's':	paused = 1;
-			        if((epsilon = calcerror()) >= tol){
-			                runsor();
-        		        	glutPostRedisplay();
+				if((epsilon = calcerror()) >= tol){
+						runsor();
+        				glutPostRedisplay();
 				}else{
 					paused = 0;
 				}
@@ -95,7 +114,6 @@ void handleKeyPress(unsigned char key, int wx, int wy)
 				paused = 0;
 /* Can time here...				glutTimerFunc(stepDelay, update, 0); */
 				break;
-
         }
 }
 
@@ -103,9 +121,9 @@ void handleKeyPress(unsigned char key, int wx, int wy)
 
 void handleResize(int wx, int hx)
 {
-        glViewport(0, 0, wx, hx);
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
+	glViewport(0, 0, wx, hx);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
 	gluOrtho2D(0, w, h, 0);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -116,9 +134,9 @@ void drawScene(void)
 {
 	int i, j;
 
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 
 	for(i=0; i<N+boundary; i++){
 		for(j=0; j<N+boundary; j++){
@@ -163,7 +181,7 @@ void update(int v)
 	(void)v;	/* Unused */
 
 	if(paused){
-	        glutTimerFunc(stepDelay, update, 0);
+		glutTimerFunc(stepDelay, update, 0);
 		glutPostRedisplay();
 		return;
 	}
@@ -171,10 +189,10 @@ void update(int v)
 	if((epsilon = calcerror()) >= tol){
 		runsor();
 		glutPostRedisplay();
-	        glutTimerFunc(stepDelay, update, 0);
+		glutTimerFunc(stepDelay, update, 0);
 	}else{
 		converged = 1;
-	        glutTimerFunc(stepDelay, update, 0);
+		glutTimerFunc(stepDelay, update, 0);
 		glutPostRedisplay();
 	}
 }
@@ -189,20 +207,20 @@ int main(int argc, char *argv[])
 	stepDelay = DELAY;
 	initgrid();
 
-        glutInit(&argc, argv);
-        glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-        glutInitWindowSize(w, h);
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+	glutInitWindowSize(w, h);
 
-        glutCreateWindow("SOR Grid");
-        initRendering();
+	glutCreateWindow("SOR Grid");
+	initRendering();
 
-        glutDisplayFunc(drawScene);
-        glutKeyboardFunc(handleKeyPress);
-        glutReshapeFunc(handleResize);
+	glutDisplayFunc(drawScene);
+	glutKeyboardFunc(handleKeyPress);
+	glutReshapeFunc(handleResize);
 
-        glutTimerFunc(stepDelay, update, 0);
+	glutTimerFunc(stepDelay, update, 0);
 
-        glutMainLoop();
-        return 0;
+	glutMainLoop();
+	return 0;
 }
 

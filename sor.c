@@ -5,8 +5,10 @@
 #include "sor.h"
 
 
-double tol = 0.001, epsilon = 0.0;
+double tol = 0.001, epsilon = 0.0, omega = 0.0;
 int iter = 0;
+
+double x[N+2][N+2], xnew[N+2][N+2], solution[N+2][N+2];
 
 
 void initgrid(void)
@@ -16,7 +18,7 @@ void initgrid(void)
 
 	for(i=0; i<N+2; i++)
 		x[i][N+1] = sin((double)i*h);
-	
+
 
 	for(i=0; i<N+2; i++)
 		for(j=0; j<N+1; j++)
@@ -25,7 +27,7 @@ void initgrid(void)
 	for(i=0; i<N+2; i++)
 		for(j=0; j<N+2; j++)
 			solution[i][j] = sinh((double)j*h) * sin((double)i*h)/sinh(M_PI);
-	
+
 
 	omega = 2.0/(1.0+sin(M_PI/(double)(N+1)));
 
